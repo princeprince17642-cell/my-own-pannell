@@ -20,25 +20,16 @@ jobs:
 
       - name: Unzip Project Files
         run: |
-          mkdir -p my_app
-          unzip -o *.zip -d my_app
-          
-          # Root directory setup
-          if [ -f "my_app/gradlew" ]; then
-            echo "ROOT_DIR=my_app" >> $GITHUB_ENV
-          else
-            INNER_DIR=$(find my_app -name "gradlew" -exec dirname {} \;)
-            echo "ROOT_DIR=$INNER_DIR" >> $GITHUB_ENV
-          fi
+          unzip -o *.zip
 
       - name: Make Gradlew Executable & Build APK
         run: |
-          cd ${{ env.ROOT_DIR }}
+          cd maanwin_pannel_app
           chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew assembleDebug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MAANWIN-PANNEL-APK
-          path: '${{ env.ROOT_DIR }}/app/build/outputs/apk/debug/*.apk'
+          name: MAANWIN-PANEL-APK
+          path: maanwin_pannel_app/app/build/outputs/apk/debug/*.apk
